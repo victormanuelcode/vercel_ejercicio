@@ -1,0 +1,47 @@
+// Importaciones necesarias para el layout principal de la aplicación
+import type React from "react"
+import type { Metadata } from "next"
+import { Inter } from "next/font/google"
+import { Analytics } from "@vercel/analytics/next"
+import "./globals.css"
+import { AuthProvider } from "@/lib/auth-context" // Proveedor de autenticación global
+
+// Configuración de la fuente Inter de Google
+// Se usa 'latin' para soporte de caracteres en español
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-sans", // Variable CSS para usar la fuente
+  display: "swap", // Mejora el rendimiento de carga de fuentes
+})
+
+// Metadatos de la aplicación
+// Se muestran en la pestaña del navegador y en resultados de búsqueda
+export const metadata: Metadata = {
+  title: "TRIUNFOGO - Sistema de Gestión Agrícola",
+  description: "Sistema completo de gestión de inventario y facturación para el sector agrícola",
+  generator: "v0.app", // Herramienta usada para generar la aplicación
+  icons: {
+    icon: "/icon.svg", // Ícono de la aplicación
+  },
+}
+
+// Componente principal del layout que envuelve toda la aplicación
+// Recibe children que serán las páginas renderizadas
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode
+}>) {
+  return (
+    // Establece el idioma de la página a español
+    <html lang="es">
+      {/* Aplica la fuente Inter y estilos base */}
+      <body className={`${inter.variable} font-sans antialiased`}>
+        {/* Proveedor de autenticación que envuelve toda la aplicación */}
+        <AuthProvider>{children}</AuthProvider>
+        {/* Componente de Analytics para seguimiento de métricas */}
+        <Analytics />
+      </body>
+    </html>
+  )
+}
